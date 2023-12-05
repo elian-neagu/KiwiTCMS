@@ -9,10 +9,10 @@ import {
 
 function preProcessData (data, callbackF) {
     const runIds = []
-    const planIds = []
+    const productIds = []
     data.forEach(function (element) {
         runIds.push(element.id)
-        planIds.push(element.plan)
+        productIds.push(element.build__version__product)
     })
 
     // get tags for all objects
@@ -29,7 +29,7 @@ function preProcessData (data, callbackF) {
             }
         })
 
-        jsonRPC('Product.filter', { plan__in: planIds }, function (products) {
+        jsonRPC('Product.filter', { pk__in: productIds }, function (products) {
             products = arrayToDict(products)
 
             // augment data set with additional info
@@ -39,8 +39,7 @@ function preProcessData (data, callbackF) {
                 } else {
                     element.tag = []
                 }
-
-                element.product_name = products[element.plan__product].name
+                element.product_name = products[element.build__version__product].name
             })
 
             callbackF({ data }) // renders everything
@@ -104,11 +103,11 @@ export function pageTestrunsSearchReadyHandler () {
             }
 
             if ($('#id_product').val()) {
-                params.plan__product = $('#id_product').val()
+                params.build__version__product = $('#id_product').val()
             };
 
             if ($('#id_version').val()) {
-                params.plan__product_version = $('#id_version').val()
+                params.build__version = $('#id_version').val()
             };
 
             if ($('#id_build').val()) {
@@ -148,7 +147,7 @@ export function pageTestrunsSearchReadyHandler () {
                 }
             },
             { data: 'product_name' },
-            { data: 'plan__product_version__value' },
+            { data: 'build__version__value' },
             { data: 'build__name' },
             { data: 'start_date' },
             { data: 'stop_date' },
