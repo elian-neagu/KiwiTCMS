@@ -142,7 +142,7 @@ function applyStyleToCell (cell) {
         const cellChildren = cellElement.children
         if (cellChildren) {
             const el = cellChildren[0]
-            if (el && el.attributes.color) {
+            if (el?.attributes.color) {
                 const color = el.attributes.color.nodeValue
                 $(cell[1]).attr('style', `border-left: 5px solid ${color}`)
                 if (el.attributes['from-parent'].nodeValue === 'true') {
